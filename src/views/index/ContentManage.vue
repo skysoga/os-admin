@@ -3,8 +3,61 @@
   	<div class="panel-heading">
                 文章管理<a class="margin-l10" @click="dialogVisible = true"><span class="el-icon-setting"></span></a>
       <div class="float-right panel-heading-right">
-        <el-button size="small" type="success" icon="plus" @click="dialogFormVisible = true">添加文章</el-button>
-        <el-button size="small" type="success" icon="plus">创建子部门</el-button>
+        <el-button
+          size="small" 
+          type="success" 
+          icon="plus" 
+          @click="dialogFormVisible = true"
+           >
+                          添加文章
+        </el-button>
+        <el-button size="small" type="success" icon="plus" @click="catalogVisible = true">创建子部门</el-button>
+      </div>
+    </div>
+    <div class="panel-body">
+      <el-table
+        ref="multipleTable"
+        :data="tableData3"
+        border
+        tooltip-effect="dark"
+        style="width: 100%"
+        @selection-change="handleSelectionChange">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          label="日期"
+          width="120">
+          <template scope="scope">{{ scope.row.date }}</template>
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="作者"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="arTitle"
+          label="文章标题"
+          >
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="操作"
+          width="120">
+          <template scope="scope">
+            <el-button
+              @click.native.prevent="deleteRow(scope.$index, tableData3)"
+              type="text"
+              size="small">
+              移除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div style="margin-top: 20px">
+        <el-button>删除</el-button>
+        <el-button @click="toggleSelection()">取消选择</el-button>
       </div>
     </div>
     <div class="modal">
@@ -25,7 +78,7 @@
       </el-dialog>
       
       <!--添加文章-->
-      <el-dialog title="添加文章" size="full" :visible.sync="dialogFormVisible">
+      <el-dialog ref="articleDialog" title="添加文章" size="small" :visible.sync="dialogFormVisible">
         <!--普通文章列表-->
         <el-form ref="form1" :model="form1" label-width="80px">
           <div class="large-12">
@@ -38,16 +91,49 @@
             <el-form-item label="文章描述">
               <el-input type="textarea" v-model="form.desc"></el-input>
             </el-form-item>
-            <el-form-item label="文章详情">
-              <el-input type="textarea" v-model="form.detail"></el-input>
-            </el-form-item>
           </div>
-          
+          <el-form-item label="文章附件">
+            <el-upload
+              action="https://jsonplaceholder.typicode.com/posts/"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog v-model="imgVisible" size="tiny">
+              <img width="100%" :src="dialogImageUrl" alt="">
+            </el-dialog>
+          </el-form-item>
+          <el-form-item label="文章详情">
+            <quill-editor ref="myTextEditor"
+              v-model="content"
+              :config="editorOption"
+              @blur="onEditorBlur($event)"
+              @focus="onEditorFocus($event)"
+              @ready="onEditorReady($event)">
+            </quill-editor>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
           <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
         </div>
+      </el-dialog>
+      <!--创建子栏目-->
+      <el-dialog
+        title="创建子栏目"
+        :visible.sync="catalogVisible"
+        size="tiny"
+        >
+          <el-form ref="form3" :model="form3" label-width="80px">
+            <el-form-item label="栏目名称">
+              <el-input v-model="form3.subCatalog"></el-input>
+            </el-form-item>
+          </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button>取 消</el-button>
+          <el-button type="primary" >确 定</el-button>
+        </span>
       </el-dialog>
     </div>
   </div>
@@ -56,6 +142,15 @@
   export default {
     data () {
       return {
+//      附件
+        dialogImageUrl: '',
+        imgVisible: false,
+//      子栏目
+        catalogVisible: false,
+        form3: {
+          subCatalog: ''
+        },
+
         dialogVisible: false,
         dialogFormVisible: false,
         form: {
@@ -67,7 +162,43 @@
           delivery: false,
           desc: ''
         },
-        formLabelWidth: '120px'
+        formLabelWidth: '120px',
+//      编辑器配置
+        content: '你好',
+        editorOption: {
+         // something config
+        },
+//      表格
+        tableData3: [{
+          date: '2016-05-03',
+          name: '王小虎',
+          arTitle: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-02',
+          name: '王小虎',
+          arTitle: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          arTitle: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          arTitle: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-08',
+          name: '王小虎',
+          arTitle: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-06',
+          name: '王小虎',
+          arTitle: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-07',
+          name: '王小虎',
+          arTitle: '上海市普陀区金沙江路 1518 弄'
+        }],
+        multipleSelection: []
       }
     },
     methods: {
@@ -77,7 +208,53 @@
             done()
           })
           .catch(_ => {})
+      },
+//    文章附件
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
+//    编辑器
+      onEditorBlur(editor) {
+        console.log('editor blur!', editor)
+      },
+      onEditorFocus(editor) {
+        console.log('editor focus!', editor)
+      },
+      onEditorReady(editor) {
+        console.log('editor ready!', editor)
+      },
+      onEditorChange({ editor, html, text }) {
+        // console.log('editor change!', editor, html, text)
+        this.content = html
+      },
+//    表格
+      toggleSelection (rows) {
+        if (rows) {
+          rows.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row)
+          });
+        } else {
+          this.$refs.multipleTable.clearSelection()
+        }
+      },
+      handleSelectionChange (val) {
+        this.multipleSelection = val
+      },
+      deleteRow(index, rows) {
+        rows.splice(index, 1);
       }
+    },
+    computed: {
+      editor() {
+//      return this.$refs.myTextEditor.quillEditor
+      }
+    },
+    mounted() {
+      console.log('this is my editor', this.editor)
     }
   }
 </script>
@@ -93,4 +270,16 @@
       color: #cbd3dd;
     }
   }  
+  .panel-body {
+    padding: 20px;
+    min-height: 250px;
+    height: -moz-calc(100vh - 120px);
+    height: -webkit-calc(100vh - 120px);
+    height: calc(100vh - 120px);
+    overflow: auto;
+    width: 100%;
+}
+.panel-body .is-hidden{
+  display: table-cell !important;
+}
 </style>

@@ -537,3 +537,7 @@ blockquote {
 .shrink.media-object-section + .media-object-section{
    flex: 1 1 0px;
 }
+/*编辑器*/
+.ql-container{
+  min-height: 300px;
+}

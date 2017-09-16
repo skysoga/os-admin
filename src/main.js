@@ -14,8 +14,8 @@ Vue.config.productionTip = false
 Vue.use(Element)
 
 // 引入编辑器
-//import VueQuillEditor from 'vue-quill-editor'
-//Vue.use(VueQuillEditor)
+import VueQuillEditor from 'vue-quill-editor'
+Vue.use(VueQuillEditor)
 
 /* eslint-disable no-new */
 new Vue({
