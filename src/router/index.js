@@ -1,65 +1,36 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import Index from '@/views/Index'
+import VueRouter from 'vue-router'
+import { routes } from './routes'
 
-import Ar from '@/views/Ar'
-import Timeline from '@/views/TimelineList'
-import HonorList from '@/views/HonorList'
-import TeamList from '@/views/TeamList'
-import NewsList from '@/views/NewsList'
-import ProductList from '@/views/ProductList'
-import FeedBook from '@/views/FeedBook'
-import Recruitment from '@/views/Recruitment'
+// install route
+Vue.use(VueRouter)
 
-Vue.use(Router)
-
-export default new Router({
+// create router
+const router = new VueRouter({
   base: process.env.BASE_PATH,
+  routes,
   mode: 'history',
-  linkActiveClass: 'active',
-  scrollBehavior (to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return { x: 0, y: 0 }
-    }
-  },
-  routes: [
-    {
-      path: '/',
-      name: 'index',
-      component: Index
-    }, {
-      path: '/ar/:id',
-      name: 'ar',
-      component: Ar
-    }, {
-      path: '/about/timeline',
-      name: 'timeline',
-      component: Timeline
-    }, {
-      path: '/about/honor',
-      name: 'honor',
-      component: HonorList
-    }, {
-      path: '/about/team',
-      name: 'team',
-      component: TeamList
-    }, {
-      path: '/news/:id',
-      name: 'news',
-      component: NewsList
-    }, {
-      path: '/product/:id',
-      name: 'product',
-      component: ProductList
-    }, {
-      path: '/contact/feedbook',
-      name: 'feedbook',
-      component: FeedBook
-    }, {
-      path: '/contact/Recruitment',
-      name: 'recruitment',
-      component: Recruitment
-    }]
+  saveScrollPosition: true,
+  linkActiveClass: 'active'
 })
+
+// configure router
+// global before
+// 3 options:
+// 1. return a boolean
+// 2. return a Promise that resolves to a boolean
+// 3. call transition.next() or transition.abort()
+router.beforeEach((to, from, next) => {
+  if (to.path === '/forbidden') {
+    router.app.authenticating = true
+    setTimeout(() => {
+      router.app.authenticating = false
+      window.alert('this route is forbidden by a global before hook')
+      next(false)
+    }, 8080)
+  } else {
+    next()
+  }
+})
+
+export default router

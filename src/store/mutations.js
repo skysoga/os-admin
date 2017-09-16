@@ -3,7 +3,6 @@ export default {
     state.page = page
   },
   SET_SUBCATALOGTREE: (state, catagory) => {
-    console.log("watch of catagory:",catagory)
     state.subcatalog = catagory
   },
   SET_CATALOGTREE: (state, items) => {

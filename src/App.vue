@@ -2,25 +2,57 @@
   <div id="app">
     <app-header></app-Header>
     <div class="wrapper">
-      <router-view></router-view>
-      <app-footer></app-footer>
+      <app-sidebar></app-sidebar>
+      <div class="frame_content" v-loading.body="loading">
+        <transition @enter="onEnter" @leave="onLeave">
+          <router-view></router-view>
+        </transition>
+      </div>
     </div>
-    <fixed-nav></fixed-nav>
   </div>
 </template>
 
 <script>
 import AppHeader from '@/views/include/AppHeader'
-import AppFooter from '@/views/include/AppFooter'
-import FixedNav from '@/views/include/FixedNav'
+import AppSidebar from '@/views/include/AppSidebar'
 export default {
   name: 'app',
+  data () {
+    return {
+      loading: false
+    }
+  },
+  methods: {
+    onEnter () {
+      this.loading = false
+    },
+    onLeave () {
+      this.loading = true
+    }
+  },
   components: {
     AppHeader,
-    AppFooter,
-    FixedNav
+    AppSidebar
   }
 }
 </script>
 <style src="./assets/css/foundation.css"></style>
 <style src="./assets/css/master.css"></style>
+<style>
+.wrapper{
+  position: relative;
+}
+  .frame_content {
+    position: absolute;
+    left: 180px;
+    right: 0;
+    width: auto;
+    transition: left .3s;
+    /* height: 100vh; */
+    height: -moz-calc(100vh - 50px);
+    height: -webkit-calc(100vh - 50px);
+    height: calc(100vh - 50px);
+    overflow: hidden;
+}  
+</style>
+

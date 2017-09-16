@@ -1,6 +1,6 @@
 @charset "utf-8";
 :root {
-  --color-primary: #b58e46;
+  --color-primary: #008fbf;
 /*// #1F2D3D*/
   --color-success: #5aab5a;
   --color-warning: #e4c17e;
@@ -55,7 +55,7 @@
   --t-banner-pad: none;/*PAD版的头部banner*/
   /***************END top-banner图片 ************************/
   /***************logo图片 ************************/
-  --t-logo:url(../img/logos.png) no-repeat left center;
+  --t-logo:url(../img/logo.png) no-repeat left center;
   /***************END logo图片 ********************/
 
   /* 模块外框头部背景颜色*/

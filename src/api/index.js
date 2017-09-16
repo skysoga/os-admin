@@ -3,11 +3,13 @@ import VueResource from 'vue-resource'
 
 Vue.use(VueResource)
 const Api = {
-  databaseUrl: '/api/catalog/list',
+  databaseUrl: '/api/article/',
+  oneArticle: '/api/catalog/:caId/article/:arId',
+  moreArticle: '/api/catalog/:caId/article/',
   catalogUrl: '/api/catalog/list'
 }
 
-export function fetch (param) {
+export function fetchArticle (param) {
   var url = Api.databaseUrl + param
   return Vue.http.get(url).then(function (res) {
     return res.body

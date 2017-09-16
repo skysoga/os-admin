@@ -1,153 +1,78 @@
 <template>
   <header class="header">
-    <div class="row">
-      <div class="large-10 medium-6 column">
+    <div class="clearfix">
+      <div class="large-12 column">
         <div class="logo">
-          <h1 style="display: none;">厦门八达</h1>
-          <a title="logo"><span></span></a>
+          <a  href="#" title="统一管理平台">统一管理平台</a>
         </div>
       </div>
-      <div class="large-14 medium-18 column small-no-padding">
-        <div class="mobile-menu" @click="toggleMenu" :class="{'is-open':isOpen}">
-            <span class="menu-patty"></span>
-            <span class="menu-patty"></span>
-            <span class="menu-patty"></span>
-        </div>
-        <div class="mobile-content" :class="{'is-open': isOpen}">
-          <!--<nav class="menu top-bar">
-            <li><router-link to="/">首 页</router-link></li>
-            <li @click="toggleSubMenu(2)">
-              <router-link to="/about">关于和八达</router-link>
-              <i class="el-icon-arrow-down"></i>
-              <ul class="vertical menu" :class="{active: index===2}">
-                <li><a href="/">企业概况</a></li>
-                <li><a href="/">企业历程</a></li>
-                <li><a href="/">资质荣誉</a></li>
-                <li><a href="/">团队管理</a></li>
-              </ul>
+      <div class="large-12 column no-padding">
+        <div class="navbar-top">
+          <ul class="">
+            <li class="media-object user" v-popover:user>
+              <div class="media-object-section">
+                <img class="img" src="../../assets/img/logo.png" alt="用户姓名"/>
+                
+              </div>
+              <div class="media-object-section">
+                <el-popover
+                  ref="user"
+                  placement="bottom"
+                  width="318"
+                  trigger="click"
+                  content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+                  <div class="clearfix user-wrapper1">
+                    <div class="user-img">
+                      <a href=""><img src="../../assets/img/logo.png" alt="方文山"></a>
+                    </div>
+                    <div class="user-con">
+                      <div class="user-name">
+                        <a href="/login">用户名</a>
+                      </div>
+                      <div class="user-descript">软件开发部：前端工程师</div>
+                      <div class="uinfo-more">
+                        <a><span>查看个人资料</span></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-wrapper clearfix">
+                    <ul class="row large-up-4 medium-up-4 small-up-1 no-margin">
+                      <li class="column">
+                        <a href="#"><span class="fa fa-envelope-o"></span>消息<span class="font-info">6</span></a>
+                      </li>
+                      <li class="column">
+                        <a href="#"><span class="fa fa-bell-o"></span>通知<span class="font-alert">12</span></a>
+                      </li>
+                      <li class="column">
+                        <a href="#"><span aria-hidden="true" class="fa fa-question-circle"></span>帮助</a>
+                      </li>
+                      <li class="column">
+                        <a href="/logout"><span class="fa fa-sign-out"></span>退出</a>
+                      </li>
+                    </ul>
+                  </div>
+                </el-popover>
+                <a class="name">用户名<i class="el-icon-caret-bottom"></i></a>
+              </div>
             </li>
-            <li @click="toggleSubMenu(3)">
-              <router-link :to="{name:'news',params: {caId: '1'}}">新闻资讯</router-link>
-              <i class="el-icon-arrow-down"></i>
-              <ul class="vertical menu" :class="{active: index===3}">
-                <li><router-link :to="{name:'news',params: {caId: '1'}}">行业新闻</router-link></li>
-                <li><router-link :to="{name:'news',params: {caId: '2'}}">最新公告</router-link></li>
-                <li><router-link :to="{name:'news',params: {caId: '3'}}">行业动态</router-link></li>
-              </ul>
-            </li>
-            <li @click="toggleSubMenu(4)">
-              <a href="/">产品展示 </a>
-              <i class="el-icon-arrow-down" ></i>
-              <ul class="vertical menu" :class="{active: index===4}">
-                <li><a href="/">习酒</a></li>
-                <li><a href="/">洋酒</a></li>
-                <li><a href="/">红酒</a></li>
-              </ul>
-            </li>
-            <li @click="toggleSubMenu(5)">
-              <a href="/">企业文化</a>
-              <i class="el-icon-arrow-down"></i>
-              <ul class="vertical menu" :class="{active: index===5}">
-                <li><a href="/">企业理念</a></li>
-                <li><a href="/">习酒文化</a></li>
-                <li><a href="/">红酒文化</a></li>
-                <li><a href="/">洋酒文化</a></li>
-              </ul>
-            </li>
-            <li @click="toggleSubMenu(6)">
-              <a href="/">联系我们</a>
-               <i class="el-icon-arrow-down"></i>
-              <ul class="vertical menu" :class="{active: index===6}">
-                <li><a href="/">联系我们</a></li>
-                <li><a href="/">企业位置</a></li>
-                <li><a href="/">留言中心</a></li>
-                <li><a href="/">招聘信息</a></li>
-              </ul>
-            </li>
-          </nav>
-          -->
-          <nav class="menu top-bar">
-            <li v-for="(item, index) in catalogTree" key="index" @click="toggleSubMenu(index)">
-             <!-- <router-link :to="{name: item[getObjectKey(item)].templateName, params: {caId: getObjectKey(item)}}">{{item[getObjectKey(item)].chineseName}}</router-link>-->
-              <a @click="topCatalog(item[getObjectKey(item)].templateName, getObjectKey(item), item[getObjectKey(item)].children)">{{item[getObjectKey(item)].chineseName}}</a>
-              <i class="el-icon-arrow-down" v-if="item[getObjectKey(item)].children.length"></i>
-              <ul class="vertical menu" :class="{active: currindex===index}" v-if="item[getObjectKey(item)].children">
-                <li v-for="(list, index) in item[getObjectKey(item)].children">
-                  <router-link :to="{name: list.templateName, params: {id: list.id}}">{{list.chineseName}}</router-link>
-                </li>
-              </ul>
-            </li>
-          </nav>
+          </ul>
         </div>
       </div>
-  </div>
+    </div>
+
   </header>
 </template>
 <script>
-  import { mapState } from 'vuex'
   export default {
     data () {
       return {
         isOpen: false,
-        currindex: 1,
+        index: 1
       }
-    },
-    computed: {
-      ...mapState({
-        catalogTree: state => state.catalogTree
-      })
-    },
-    mounted () {
-      this.$nextTick(function () {
-        this.getCatalog()
-      })
     },
     methods: {
-      getCatalog () {
-        this.$store.dispatch('FETCH_CATALOG')
-      },
-      topCatalog (templateName, caId, children) {
-        this.$router.push({ name: templateName, params: { id: parseInt(caId) + 1} }); 
-        this.searchCatalog(children)
-      },
-      searchCatalog (subCatalog) {
-        this.$store.dispatch('FETCH_SUBCATALOG', subCatalog)
-      },
-      toggleMenu () {
-        this.isOpen = !this.isOpen
-      },
-      getObjectKey (item) {
-        for (var key in item) {}
-        return key
-      },
-      toggleSubMenu (index) {
-        console.log(index)
-        if (this.currindex === index) {
-          this.currindex = 1
-        } else {
-          this.currindex = index
-        }
-      },
-      closeMenu () {
-        this.isOpen = false
-      }
     },
     watch: {
-      isOpen (nv) {
-        if (nv) {
-          document.body.style.overflow = 'hidden'
-        } else {
-          document.body.style.overflow = 'auto'
-        }
-      },
-      catalogTree (nv) {
-        for(let i of nv){
-          console.log(3, i)
-        }
-      },
-      $route () {
-        this.isOpen = false
-      }
     }
   }
 </script>
@@ -157,7 +82,21 @@
     height: 50px;
     line-height: 50px;
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: var(--color-primary);
+  }
+  .media-object.user{
+    height: 50px;
+    line-height: 50px;
+    padding: 0 10px;
+    & .name{
+      color: #fff;
+      & i{
+        margin-left: 6px;
+      }
+    }
+    &:hover{
+      background: color(var(--color-primary) tint(30%));
+    }
   }
   .top-bar{
     & > li {
@@ -166,27 +105,27 @@
         font-size: 10px;
         color: var(--color-primary);
         position: absolute;
-        top: 21px;
+        top: 18px;
         right: 4px;
         height: 8px;
         transition: all .3s;
         z-index: 100;
       }
-      & a {
+    }
+  }
+  @media only screen and (min-width: 769px) {
+    .top-bar{
+      & > li {
+        & a {
           color: var(--color-primary);
-          font-size: 14px;
-          padding: 18px 1.2rem;
+          font-size: 13px;
           &:hover {
             color: color(var(--color-primary) shade(20%))
           }
         }
-    }
-  }
-  @media only screen and (min-width: 768px) {
-  	.top-bar{
-      & > li {
-        & > a{
-          font-size: 13px;
+        & > i.el-icon-arrow-down{
+          top: 20px;
+          right: 10px;
         }
         & > ul{
           position: absolute;
@@ -216,13 +155,28 @@
         }
         &:hover i.el-icon-arrow-down{
           transform: rotateZ(180deg);
+        }
+      }
+    }
+    .top-bar{
+      & > li {
+        & > a{
+          padding: 18px 1.6rem;
         } 
       }
     }
   }
-  @media only screen and (max-width: 767px) {
+  @media only screen and (max-width: 768px) {
     .header{
       height: 46px;
+    }
+    .top-bar{
+      & > li {
+        & > a{
+          font-size: 13px;
+          padding: 1rem 10px;
+        } 
+      }
     }
     .mobile-menu {
       /*display: none;*/
@@ -299,10 +253,11 @@
         }
       }
     }
-    
-  	.mobile-content{
-  	  background: rgba(0,0,0,.9);
-  	  position: absolute;
+  }
+  @media only screen and (max-width: 767px) {
+    .mobile-content{
+      background: rgba(0,0,0,.9);
+      position: absolute;
       z-index: 2;
       top: 46px;
       right: 0;
@@ -357,16 +312,16 @@
         padding: 1rem 1rem 1rem 2rem;
         font-size: 13px;
       }
-  	}
-  	.mobile-content.is-open{
-  	  visibility: visible;
+    }
+    .mobile-content.is-open{
+      visibility: visible;
       transition-delay: 0s;
       & .top-bar > li{
           opacity: 1;
           pointer-events: auto;
           transform: none;
       }
-  	}
+    }
   }
 @keyframes ac-gn-list-searchshow {
     0% {
@@ -379,5 +334,69 @@
     100% {
         transform: translateY(-100%) translateY(calc(100% - 46px))
     }
+}
+.navbar-top{
+  float: right;
+}
+.user .img{
+  width: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  height: 40px;
+  display: inline-block;
+}
+.user-wrapper1 {
+  padding: 20px;
+}
+.user-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    float: left;
+}
+.user-img a {
+    display: block;
+}
+.user-con {
+    position: relative;
+    padding: 0 0 15px 70px;
+    border-bottom: 4px solid #ddd;
+}
+.user-name {
+    font-size: 1.2rem;
+}
+.user-name a {
+    width: 110px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inherit;
+}
+.user-descript {
+    font-size: 0.8rem;
+    color: #adb9c8;
+    margin-top: 5px;
+}
+.uinfo-more {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.user-wrapper ul, .user-wrapper .row {
+    padding: 0 8px;
+}
+.user-wrapper ul li, .user-wrapper .row .column {
+    padding: 0 4px 10px 4px;
+    position: relative;
+    list-style: none;
+    text-align: center;
+}
+.el-dropdown-menu li a {
+    display: block;
+    padding: 0.5rem;
+    color: #555555;
+    transition: background .6s;
 }
 </style>

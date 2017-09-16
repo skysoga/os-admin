@@ -16,8 +16,7 @@
 <style scoped="">
   @import 'css/variable.css';
   .app-footer{
-    margin-top: 1rem;
-    padding: 2rem  1rem 1rem;
+    padding: 4rem  1rem 1rem;
     background: rgba(0,0,0,.8);
     min-width: 320px;
     & p{

@@ -13,7 +13,6 @@ export default {
         a[i.id] = i
         resultCatalogTree.push(a)
       }
-      console.log(2, resultCatalogTree)
       commit('SET_CATALOGTREE', { resultCatalogTree })
     })
   },
