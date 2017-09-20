@@ -7,7 +7,7 @@
           size="small" 
           type="success" 
           icon="plus" 
-          @click="dialogFormVisible = true"
+          @click="addAr(2)"
            >
                           添加文章
         </el-button>
@@ -88,8 +88,27 @@
             <el-form-item label="是否推荐">
               <el-switch on-text="" off-text="" v-model="form.delivery"></el-switch>
             </el-form-item>
-            <el-form-item label="文章描述">
-              <el-input type="textarea" v-model="form.desc"></el-input>
+            <el-form-item label="关键字">
+              <el-tag
+                :key="tag"
+                v-for="tag in form1.dynamicTags"
+                :closable="true"
+                :close-transition="false"
+                @close="handleClose(tag)"
+              >
+                {{tag}}
+              </el-tag>
+              <el-input
+                class="input-new-tag"
+                v-if="inputVisible"
+                v-model="inputValue"
+                ref="saveTagInput"
+                size="mini"
+                @keyup.enter.native="handleInputConfirm"
+                @blur="handleInputConfirm"
+              ></el-input>
+              <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加</el-button>
+              <p class="color-secondary">按Ｅｎｔｅｒ键盘键确定</p>
             </el-form-item>
           </div>
           <el-form-item label="文章附件">
@@ -97,12 +116,10 @@
               action="https://jsonplaceholder.typicode.com/posts/"
               list-type="picture-card"
               :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove">
+              :on-remove="handleRemove"
+              >
               <i class="el-icon-plus"></i>
             </el-upload>
-            <el-dialog v-model="imgVisible" size="tiny">
-              <img width="100%" :src="dialogImageUrl" alt="">
-            </el-dialog>
           </el-form-item>
           <el-form-item label="文章详情">
             <quill-editor ref="myTextEditor"
@@ -135,6 +152,48 @@
           <el-button type="primary" >确 定</el-button>
         </span>
       </el-dialog>
+      <!--添加产品-->
+      <el-dialog
+        title="添加产品"
+        :visible.sync="productVisible"
+        size="small"
+        :before-close="handleClose">
+        <el-form ref="productFrom" :model="productFrom" label-width="80px">
+          <el-form-item label="品名">
+            <el-input v-model="productFrom.name"></el-input>
+          </el-form-item>
+          <el-form-item label="酒精度">
+            <el-input v-model="productFrom.als"></el-input>
+          </el-form-item>
+          <el-form-item label="规格">
+            <el-input v-model="productFrom.spec"></el-input>
+          </el-form-item>
+          <el-form-item label="产品特点">
+            <el-input type="textarea" v-model="productFrom.feature"></el-input>
+          </el-form-item>
+          <el-form-item label="产品附件">
+            <el-upload
+              action="https://jsonplaceholder.typicode.com/posts/"
+              list-type="picture-card"
+              :on-remove="handleRemove">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="产品详情">
+            <quill-editor ref="myTextEditor"
+              v-model="productFrom.content"
+              :config="editorOption"
+              @blur="onEditorBlur($event)"
+              @focus="onEditorFocus($event)"
+              @ready="onEditorReady($event)">
+            </quill-editor>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -156,11 +215,14 @@
         form: {
           name: ''
         },
+        inputVisible: false,
+        inputValue: '',
         form1: {
           name: '',
           detail: '',
           delivery: false,
-          desc: ''
+          desc: '',
+          dynamicTags: ['标签一'],
         },
         formLabelWidth: '120px',
 //      编辑器配置
@@ -198,10 +260,26 @@
           name: '王小虎',
           arTitle: '上海市普陀区金沙江路 1518 弄'
         }],
-        multipleSelection: []
+        multipleSelection: [],
+//      产品表单
+        productVisible: false,
+        productFrom: {
+          name: '',
+          als: '',
+          spec: '',
+          feature: '',
+          content: ''
+        }
       }
     },
     methods: {
+      addAr (i) {
+        if (i === 1) {
+          this.dialogFormVisible = true
+        } else {
+          this.productVisible = true
+        }
+      },
       handleClose(done) {
         this.$confirm('确认关闭？')
           .then(_ => {
@@ -245,7 +323,31 @@
         this.multipleSelection = val
       },
       deleteRow(index, rows) {
-        rows.splice(index, 1);
+        rows.splice(index, 1)
+      },
+//    添加关键字
+      handleClose(tag) {
+        this.form1.dynamicTags.splice(this.form1.dynamicTags.indexOf(tag), 1)
+      },
+
+      showInput() {
+        this.inputVisible = true;
+        this.$nextTick(_ => {
+          this.$refs.saveTagInput.$refs.input.focus()
+        })
+      },
+
+      handleInputConfirm () {
+        let inputValue = this.inputValue;
+        if (inputValue) {
+          this.form1.dynamicTags.push(inputValue)
+        }
+        this.inputVisible = false
+        this.inputValue = ''
+      },
+//    添加封面
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
       }
     },
     computed: {
