@@ -10,5 +10,8 @@ export default {
   },
   SET_ARTICLE: (state, article) => {
     state.article = article
+  },
+  SET_TOKEN: (state, userInfo) => {
+    state.token = userInfo
   }
 }

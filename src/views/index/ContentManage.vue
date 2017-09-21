@@ -156,8 +156,7 @@
       <el-dialog
         title="添加产品"
         :visible.sync="productVisible"
-        size="small"
-        :before-close="handleClose">
+        size="small">
         <el-form ref="productFrom" :model="productFrom" label-width="80px">
           <el-form-item label="品名">
             <el-input v-model="productFrom.name"></el-input>

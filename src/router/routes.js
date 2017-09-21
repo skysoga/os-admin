@@ -8,6 +8,9 @@ export const routes = [{
   component: Index,
   children: [{
     path: '/',
+    meta: {
+      requireAuth: true,
+    },
     component: Cmanage
   }]
 }, {

@@ -6,6 +6,7 @@ import Element from 'element-ui'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import { createStore } from './store'
 
 
 Vue.config.productionTip = false
@@ -18,9 +19,11 @@ import VueQuillEditor from 'vue-quill-editor'
 Vue.use(VueQuillEditor)
 
 /* eslint-disable no-new */
+const store = createStore()
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

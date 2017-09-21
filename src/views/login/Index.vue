@@ -7,7 +7,7 @@
         <div class="row" id="data_footer">
             <div class="copyright">
                 © 2016&nbsp;
-                <a href="http://www.miitbeian.gov.cn/"><img src="images/icon-police.png" alt="" style="margin-right: 4px;position: relative;top: -1px;">闽ICP备16028505号-1</a>&nbsp;&nbsp; 
+                <a href="http://www.miitbeian.gov.cn/"><img src="../../assets/img/icon-police.png" alt="" style="margin-right: 4px;position: relative;top: -1px;">闽ICP备16028505号-1</a>&nbsp;&nbsp; 
                 版权所有&nbsp;|
                 <a href="#">xxx公司</a>
             </div>
@@ -97,7 +97,7 @@
     box-shadow: none;
     border-radius: 0;
     height: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 0;
 }
 .checkout-error {
     text-align: center;

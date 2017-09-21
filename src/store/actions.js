@@ -1,7 +1,8 @@
 import {
-  fetchCatalog
+  fetchCatalog,
+  loginByUsername
 } from '../api'
-
+import { getToken, setToken, removeToken } from '@/utils/auth'
 export default {
   // ensure data for rendering given list type
   FETCH_CATALOG: ({ commit, state }) => {
@@ -18,5 +19,9 @@ export default {
   },
   FETCH_SUBCATALOG: ({ commit, state }, catagory) =>{
     commit('SET_SUBCATALOGTREE',catagory)
+  },
+  LOGINBYUSERNAME({ commit, state }, userInfo) {
+    setToken(userInfo)
+    commit('SET_TOKEN', userInfo)
   }
 }

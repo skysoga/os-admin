@@ -10,7 +10,8 @@ export function createStore () {
   return new Vuex.Store({
     state: {
       catalogTree: {},
-      article: null
+      article: null,
+      token: null
     },
     actions,
     mutations,

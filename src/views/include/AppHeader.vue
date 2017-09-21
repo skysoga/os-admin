@@ -47,7 +47,7 @@
                         <a href="#"><span aria-hidden="true" class="fa fa-question-circle"></span>帮助</a>
                       </li>
                       <li class="column">
-                        <a href="/logout"><span class="fa fa-sign-out"></span>退出</a>
+                        <a @click="loginOut()"><span class="fa fa-sign-out"></span>退出</a>
                       </li>
                     </ul>
                   </div>
@@ -63,16 +63,33 @@
   </header>
 </template>
 <script>
+  import { getToken, removeToken } from '@/utils/auth'
   export default {
     data () {
       return {
         isOpen: false,
-        index: 1
+        index: 1,
+        token: null
       }
     },
+    created () {
+      this.token = getToken()
+      console.log('111', this.token)
+    },
     methods: {
+      loginOut () {
+        removeToken()
+        this.token = getToken()
+        console.log('222', this.token)
+      }
     },
     watch: {
+      token (nv) {
+        console.log('tuichu')
+        if (!nv) {
+          this.$router.push({path:'/login'})
+        }
+      }
     }
   }
 </script>
